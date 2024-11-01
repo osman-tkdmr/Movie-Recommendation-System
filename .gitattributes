@@ -1,2 +1,4 @@
 ratings.csv filter=lfs diff=lfs merge=lfs -text
 credits.csv filter=lfs diff=lfs merge=lfs -text
+Datasets/credits.csv filter=lfs diff=lfs merge=lfs -text
+Datasets/ratings.csv filter=lfs diff=lfs merge=lfs -text
