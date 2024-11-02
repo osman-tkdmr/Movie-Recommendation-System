@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='user.css') }}">
+    <title>User Profile</title>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    <div class="main-container">
+        <h1>Welcome, {{ user.username }}</h1>
+        <h2>Your Ratings</h2>
+        <div class="ratings-container">
+            {% for movie in rated_movies %}
+            <div class="rating">
+                <img src="https://image.tmdb.org/t/p/w220_and_h330_face{{ movie.poster_path }}" alt="{{ movie.title }} poster" class="movie-poster">
+                <div class="movie-info">
+                    <h3>{{ movie.title }}</h3>
+                    <p>Your Rating: {{ movie.rating }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='search.js') }}"></script>
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.classList.add('modal-open');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.classList.remove('modal-open');
+            }
+        }
+    </script>
+</body>
+
+</html>

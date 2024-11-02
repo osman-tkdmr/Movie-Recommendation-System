@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+body {
+    background-color: #18181b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    color: white;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 1200px;
+    position: relative;
+    background-color: #27272a;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    overflow: hidden; /* Hide overflow content */
+    padding: 2rem;
+}
+
+.ratings-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.rating {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #313131;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.movie-poster {
+    width: 150px;
+    height: 225px;
+    object-fit: cover;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+}
+
+.movie-info {
+    text-align: center;
+}
+
+.movie-info h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.movie-info p {
+    margin: 0.5rem 0 0;
+    font-size: 1rem;
+}

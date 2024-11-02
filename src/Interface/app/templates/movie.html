@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='movie.css') }}">
+    <title>{{ movie.title }}</title>
+</head>
+
+<body>
+    {% include 'header.html' %}
+
+    <div class="main-container">
+        <div class="movie-details">
+            <div class="movie-poster">
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster"
+                    class="poster-image">
+            </div>
+            <div class="movie-info">
+                <h1>{{ movie.title }}</h1>
+                <p class="overview">{{ movie.overview }}</p>
+                <p class="genres">Genres: {{ movie.genres }}</p>
+                <p class="release-date">Release Date: {{ movie.release_date }}</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

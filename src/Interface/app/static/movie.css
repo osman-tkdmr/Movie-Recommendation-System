@@ -1,0 +1,122 @@
+/* movie.css */
+body {
+    background-color: #18181b;
+    display: flex;
+    color: white;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 1200px;
+    position: relative;
+    background-color: #27272a;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    overflow: hidden; /* Hide overflow content */
+}
+
+.movie-details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2rem;
+}
+
+.movie-details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: #18181b;
+    color: white;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.movie-title {
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+.movie-content {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.movie-poster {
+    flex: 0 0 250px;
+    margin-right: 2rem;
+    margin-left: 2rem;
+    margin-top: 2rem;
+}
+
+.movie-poster img {
+    width: 100%;
+    border-radius: 0.375rem;
+}
+
+.poster-image {
+    width: 100%;
+    height: auto;
+    border-radius: 0.375rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.movie-info {
+    flex: 1;
+}
+
+.movie-info p {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.movie-info .genres {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.movie-info h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.overview {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.genres, .release-date {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .movie-details {
+        flex-direction: column;
+    }
+    .movie-content {
+        flex-direction: column;
+        align-items: center;
+    }
+    .movie-poster {
+        margin: 0 auto 2rem auto;
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+    .movie-info {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
