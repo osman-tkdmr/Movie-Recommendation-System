@@ -1,23 +1,17 @@
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import numpy as np
 import re
-
 
 class MovieRecommendationSystem:
     def __init__(self, data_path):
         # Load the dataset
-        self.data = pd.read_csv(data_path)
+        self.data = pd.read_csv(data_path).head(10000)
         # Ensure 'title' and 'overview' columns exist
         if 'title' not in self.data.columns or 'overview' not in self.data.columns:
             raise ValueError("Dataset must contain 'title' and 'overview' columns.")
         # Preprocess the overview texts
-
-        self.data = self.data.head(10000)
-        
-        self.data["overview"] = self.data["overview"] + self.data["genres"] + self.data["keywords"] + self.data["tagline"]
-        self.data['overview'] = self.data['overview'].fillna('')
+        self.data["overview"] = self.data["overview"].fillna('') + self.data["genres"].fillna('') + self.data["keywords"].fillna('') + self.data["tagline"].fillna('')
         self.data['overview'] = self.data['overview'].apply(self._preprocess_text)
         # Create TF-IDF matrix
         self.vectorizer = TfidfVectorizer()
@@ -27,9 +21,7 @@ class MovieRecommendationSystem:
     
     def _preprocess_text(self, text):
         # Simple preprocessing: convert to lowercase and remove special characters
-        text = text.lower()
-        text = re.sub(r'[^a-z0-9\s]', '', text)
-        return text
+        return re.sub(r'[^a-z0-9\s]', '', text.lower())
     
     def recommend_movies(self, movie_title, top_n=12):
         # Check if the movie exists in the dataset
@@ -56,22 +48,17 @@ class MovieRecommendationSystem:
     
     def popular_movies(self, top_n=12):
         # Get the indices of the top N movies based on vote average
-        top_movies = self.data.nlargest(top_n, 'popularity')
-
-        return top_movies
+        return self.data.nlargest(top_n, 'popularity')
 
     def search_movies_by_title(self, title_query):
         # Search for movies that contain the title query
-        results = self.data[self.data['title'].str.contains(title_query, case=False, na=False)]
-        return results
+        return self.data[self.data['title'].str.contains(title_query, case=False, na=False)]
     
     def search_movies_by_keyword(self, keyword_query):
         # Search for movies that contain the keyword query
-        results = self.data[self.data['keywords'].str.contains(keyword_query, case=False, na=False)]
-        return results
+        return self.data[self.data['keywords'].str.contains(keyword_query, case=False, na=False)]
     
     def search_movies_by_genre(self, genre_query):
         # Search for movies that contain the genre query
-        results = self.data[self.data['genres'].str.contains(genre_query, case=False, na=False)]
-        return results
-    
+        return self.data[self.data['genres'].str.contains(genre_query, case=False, na=False)]
+
