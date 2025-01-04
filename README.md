@@ -1,4 +1,4 @@
-# Final-Project1
+# Movie-Recommendation-System
 
 ## Recommendation System
 
@@ -35,8 +35,8 @@ The recommendation system uses a content-based filtering approach. The main step
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/yourusername/Final-Project1.git
-    cd Final-Project1
+    git clone https://github.com/yourusername/Movie-Recommendation-System.git
+    cd Movie-Recommendation-System
     ```
 
 2. **Create a virtual environment**:
