@@ -6,7 +6,7 @@ import re
 class MovieRecommendationSystem:
     def __init__(self, data_path):
         # Load the dataset
-        self.data = pd.read_csv(data_path).head(10000)
+        self.data = pd.read_csv(data_path)
         # Ensure 'title' and 'overview' columns exist
         if 'title' not in self.data.columns or 'overview' not in self.data.columns:
             raise ValueError("Dataset must contain 'title' and 'overview' columns.")
@@ -49,6 +49,9 @@ class MovieRecommendationSystem:
     def popular_movies(self, top_n=12):
         # Get the indices of the top N movies based on vote average
         return self.data.nlargest(top_n, 'popularity')
+    
+    def top_movies(self, top_n=12):
+        return self.data.head(top_n)
 
     def search_movies_by_title(self, title_query):
         # Search for movies that contain the title query

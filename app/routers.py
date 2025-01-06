@@ -10,8 +10,8 @@ app.config.from_object(Config)
 db.init_app(app)
 bcrypt.init_app(app)
 # Load Movie Data
-MRS = MovieRecommendationSystem(data_path="data\\raw\\TMDB_movie_dataset_v11.csv")
-top_movies = MRS.popular_movies().to_dict(orient='records')
+MRS = MovieRecommendationSystem(data_path="data\\processed\\myData.csv")
+top_movies = MRS.top_movies().to_dict(orient='records')
 
 def login_required(f):
     @wraps(f)
