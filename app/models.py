@@ -23,6 +23,13 @@ class Movie(db.Model):
     vote_average = db.Column(db.Float, nullable=False)
     vote_count = db.Column(db.Integer, nullable=False)
     popularity = db.Column(db.Float, nullable=False)
+    release_date = db.Column(db.Date, nullable=True)
+    budget = db.Column(db.Integer, nullable=True)
+    revenue = db.Column(db.Integer, nullable=True)
+    original_language = db.Column(db.String(10), nullable=True)
+    imdb_averageRating = db.Column(db.Float, nullable=True)
+    imdb_numVotes = db.Column(db.Float, nullable=True)
+    adult = db.Column(db.Boolean, nullable=False, default=False)
 
 class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
