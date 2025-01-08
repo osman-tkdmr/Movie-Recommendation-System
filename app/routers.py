@@ -94,7 +94,7 @@ def search():
     start = (page - 1) * per_page
     end = start + per_page
     paginated_results = results.iloc[start:end]
-    paths = paginated_results[['id', 'title', 'poster_path', 'vote_average']].to_dict(orient='records')
+    paths = paginated_results[['id', 'title', 'poster_path', 'vote_average', 'release_date']].to_dict(orient='records')
     return jsonify({'paths': paths, 'total_results': total_results, 'page': page, 'per_page': per_page})
 
 @app.route('/movie/<int:movie_id>')
@@ -102,7 +102,11 @@ def movie_details(movie_id):
     movie = MRS.data[MRS.data['id'] == movie_id].iloc[0]
     ratings = Rating.query.filter_by(movie_id=movie.id).all()
     average_rating = sum(rating.rating for rating in ratings) / len(ratings) if ratings else movie.vote_average
-    return render_template('movie.html', movie=movie, average_rating=average_rating, username=session.get('username'))
+    # Get recommended movies
+    recommended_movies = MRS.recommend_movies(movie.title).to_dict(orient='records')
+    return render_template('movie.html', movie=movie, average_rating=average_rating, 
+                         username=session.get('username'), recommended_movies=recommended_movies)
+
 
 @app.route('/user/<username>')
 @login_required

@@ -150,7 +150,12 @@ class MovieSlider {
         this.container.innerHTML = '';
     }
 }
-
+document.addEventListener('DOMContentLoaded', function() {
+    window.recommendationsSlider = new MovieSlider({
+        containerId: 'recommendations-slider',
+        moviePaths: moviePaths
+    });
+});
 // Initialize the slider when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     window.sliderInstance = new MovieSlider({

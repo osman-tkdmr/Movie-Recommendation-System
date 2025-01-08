@@ -6,16 +6,23 @@ import re
 class MovieRecommendationSystem:
     def __init__(self, data_path):
         # Load the dataset
-        self.data = pd.read_csv(data_path)
-        # Ensure 'title' and 'overview' columns exist
-        if 'title' not in self.data.columns or 'overview' not in self.data.columns:
-            raise ValueError("Dataset must contain 'title' and 'overview' columns.")
-        # Preprocess the overview texts
-        self.data["overview"] = self.data["overview"].fillna('') + self.data["genres"].fillna('') + self.data["keywords"].fillna('') + self.data["tagline"].fillna('')
-        self.data['overview'] = self.data['overview'].apply(self._preprocess_text)
+        self.data = pd.read_csv(data_path).head(100)
+        # Ensure necessary columns exist, fill with empty strings if not
+        for col in ['genres', 'keywords', 'tagline', 'overview']:
+            if col not in self.data.columns:
+                self.data[col] = ''
+        # Create a new column with combined features
+        self.data["combined_features"] = (
+            self.data["overview"].fillna('') +
+            self.data["genres"].fillna('') +
+            self.data["keywords"].fillna('') +
+            self.data["tagline"].fillna('')
+        )
+        # Preprocess the combined features text
+        self.data['combined_features'] = self.data['combined_features'].apply(self._preprocess_text)
         # Create TF-IDF matrix
         self.vectorizer = TfidfVectorizer()
-        self.tfidf_matrix = self.vectorizer.fit_transform(self.data['overview'])
+        self.tfidf_matrix = self.vectorizer.fit_transform(self.data['combined_features'])
         # Compute cosine similarity matrix
         self.cosine_sim = cosine_similarity(self.tfidf_matrix, self.tfidf_matrix)
     
@@ -47,7 +54,7 @@ class MovieRecommendationSystem:
         return self.data.iloc[movie_indices]
     
     def popular_movies(self, top_n=12):
-        # Get the indices of the top N movies based on vote average
+        # Get the indices of the top N movies based on popularity
         return self.data.nlargest(top_n, 'popularity')
     
     def top_movies(self, top_n=12):
