@@ -222,7 +222,7 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 100%);
     color: white;
     padding: 0.5rem;
     text-align: center;
@@ -273,24 +273,31 @@ body {
 .dots {
     display: flex;
     justify-content: center;
-    gap: 0.5rem;
-    padding: 1rem 0;
+    gap: 0.8rem;
+    padding: 1.5rem 0;
 }
 
 .dot {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0.25rem;
+    padding: 0;
+    transition: all 0.3s ease;
 }
 
 .dot .material-icons {
-    font-size: 12px;
-    color: #aaa;
+    font-size: 14px;
+    color: #52525b;
+    transition: all 0.3s ease;
 }
 
 .dot.active .material-icons {
-    color: white;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.dot:hover .material-icons {
+    color: #a1a1aa;
 }
 
 
@@ -304,34 +311,133 @@ body {
     }
 }
 
-/* Responsive adjustments */
+/* Add these new styles */
+.rating-card {
+    background: #2d2d2d;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.star-rating {
+    display: flex;
+    flex-direction: row;  /* Add this */
+    flex-wrap: wrap;       /* Add this for mobile responsiveness */
+    gap: 4px;
+    margin: 1rem 0;
+}
+
+/* Add these star rating enhancements */
+.btn-rating {
+    background: hsl(51, 100%, 50%);
+    color: #1a1a1a;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-rating:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+}
+
+.gold-star {
+    color: #ffd700;
+    font-size: 1.4rem;
+}
+
+.gray-star {
+    color: #4a4a4a;
+    font-size: 1.4rem;
+}
+
+/* Enhance movie details layout */
+.movie-details {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
 @media (max-width: 768px) {
     .movie-details {
-        flex-direction: column;
+        grid-template-columns: 1fr;
     }
-    .movie-content {
-        flex-direction: column;
-        align-items: center;
+    
+    .poster-image {
+        max-width: 250px;
+        margin: 0 auto;
     }
-    .movie-poster {
-        margin: 0 auto 2rem auto;
-        flex: 1 1 100%;
-        max-width: 100%;
-    }
-    .main-movie-info {
-        flex: 1 1 100%;
-        max-width: 100%;
-    }
+}
+.stars-container {
+    display: flex;
+    gap: 3px;
+    justify-content: left;
+    width: 100%;
+}
+.star-rating .star {
+    cursor: pointer;
+    color: #4a4a4a;
+    transition: all 0.2s ease;
+    font-size: 1.8rem;
+}
 
-    .recommendations-section {
-        padding: 1.5rem;
+.star-rating .star.active,
+.star-rating .star:hover {
+    color: #ffd700;
+    transform: scale(1.1);
+}
+
+.rating-display {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 1rem;
+}
+
+.rating-display .stars {
+    font-size: 1.4rem;
+    color: #ffd700;
+}
+
+.numeric-value {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+/* Update existing styles */
+.main-movie-info {
+    flex: 1;
+    padding: 2rem;
+    background: #1f1f1f;
+    border-radius: 12px;
+}
+
+.main-movie-info h1 {
+    color: #fff;
+    margin-bottom: 2rem;
+}
+
+.overview {
+    color: #d1d5db;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .rating-card {
+        margin-top: 2rem;
     }
     
-    #recommendations-slider .movie-card {
-        max-width: 140px;
-    }
-    
-    .recommendations-section h2 {
+    .star-rating .star {
         font-size: 1.5rem;
+    }
+    
+    .main-movie-info {
+        padding: 1rem;
     }
 }

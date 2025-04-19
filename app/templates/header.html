@@ -1,106 +1,131 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<nav class="custom-navbar">
-    <div class="container">
-        <div class="nav-content">
-            <a class="brand" href="/">Welcome, {{ username }}</a>
-            <form class="search-form" onsubmit="searchMovies(); return false;">
-                <input type="text" name="movie_title" class="search-input" placeholder="Search movies..." oninput="toggleClearButton()" autocomplete="off">
-                <button type="button" onclick="searchMovies()" class="search-button">
-                    <span class="material-icons">search</span>
-                </button>
-                <button type="button" onclick="clearSearch()" class="clear-button" style="display: none;">
-                    <span class="material-icons">clear</span>
-                </button>
-            </form>
-            {% if username %}
-            <a href="{{ url_for('user_profile', username=username) }}" class="profile-btn">Profile</a>
-            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
-            {% else %}
-            <div class="auth-buttons">
-                <a href="#" class="logout-btn" onclick="openModal('loginModal')">Login</a>
-                <a href="#" class="logout-btn" onclick="openModal('signupModal')">Sign Up</a>
+<head>
+    <!-- Add this line -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <nav class="custom-navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a class="brand" href="/"> Moppie </a>
+                <form class="search-form" onsubmit="searchMovies(); return false;">
+                    <input type="text" name="movie_title" class="search-input" placeholder="Search movies..." oninput="toggleClearButton()" autocomplete="off">
+                    <div class="filter-container">
+                        <select class="filter-select" id="genre-filter">
+                            <option value="">All Genres</option>
+                            <option>Action</option>
+                            <option>Comedy</option>
+                            <option>Drama</option>
+                            <option>Horror</option>
+                            <option>Sci-Fi</option>
+                        </select>
+                        <select class="filter-select" id="year-filter">
+                            <option value="">All Years</option>
+                            {% for year in range(2024, 1979, -1) %}
+                            <option>{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                        <select class="filter-select" id="rating-filter">
+                            <option value="">All Ratings</option>
+                            {% for rating in range(1, 11) %}
+                            <option>{{ rating }}+</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="button" onclick="searchMovies()" class="search-button">
+                        <span class="material-icons">search</span>
+                    </button>
+                    <button type="button" onclick="clearSearch()" class="clear-button" style="display: none;">
+                        <span class="material-icons">clear</span>
+                    </button>
+                </form>
+                {% if username %}
+                <a href="{{ url_for('user_profile', username=username) }}" class="profile-btn">Profile</a>
+                <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+                {% else %}
+                <div class="auth-buttons">
+                    <a href="#" class="logout-btn" onclick="openModal('loginModal')">Login</a>
+                    <a href="#" class="logout-btn" onclick="openModal('signupModal')">Sign Up</a>
+                </div>
+                {% endif %}
             </div>
-            {% endif %}
+        </div>
+    </nav>
+    
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Login</h2>
+            <form method="POST" class="modal-form" action="{{ url_for('login') }}">
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" name="username" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" onclick="openModal('signupModal'); closeModal('loginModal')">Sign up</a></p>
         </div>
     </div>
-</nav>
-
-<!-- Login Modal -->
-<div id="loginModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('loginModal')">&times;</span>
-        <h2>Login</h2>
-        <form method="POST" class="modal-form" action="{{ url_for('login') }}">
-            <input type="hidden" name="next" value="{{ request.path }}">
-            <div class="form-group">
-                <label for="login-username">Username</label>
-                <input type="text" id="login-username" name="username" required autocomplete="username">
-            </div>
-            <div class="form-group">
-                <label for="login-password">Password</label>
-                <input type="password" id="login-password" name="password" required autocomplete="current-password">
-            </div>
-            <button type="submit" class="btn">Login</button>
-        </form>
-        <p>Don't have an account? <a href="#" onclick="openModal('signupModal'); closeModal('loginModal')">Sign up</a></p>
+    
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signupModal')">&times;</span>
+            <h2>Sign Up</h2>
+            <form method="POST" class="modal-form" action="{{ url_for('signup') }}">
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <div class="form-group">
+                    <label for="signup-username">Username</label>
+                    <input type="text" id="signup-username" name="username" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" name="email" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" name="password" required autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="signup-confirm-password">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" name="confirm_password" required autocomplete="new-password">
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+            </form>
+            <p>Already have an account? <a href="#" onclick="openModal('loginModal'); closeModal('signupModal')">Login</a></p>
+        </div>
     </div>
-</div>
-
-<!-- Signup Modal -->
-<div id="signupModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('signupModal')">&times;</span>
-        <h2>Sign Up</h2>
-        <form method="POST" class="modal-form" action="{{ url_for('signup') }}">
-            <input type="hidden" name="next" value="{{ request.path }}">
-            <div class="form-group">
-                <label for="signup-username">Username</label>
-                <input type="text" id="signup-username" name="username" required autocomplete="username">
-            </div>
-            <div class="form-group">
-                <label for="signup-email">Email</label>
-                <input type="email" id="signup-email" name="email" required autocomplete="email">
-            </div>
-            <div class="form-group">
-                <label for="signup-password">Password</label>
-                <input type="password" id="signup-password" name="password" required autocomplete="new-password">
-            </div>
-            <div class="form-group">
-                <label for="signup-confirm-password">Confirm Password</label>
-                <input type="password" id="signup-confirm-password" name="confirm_password" required autocomplete="new-password">
-            </div>
-            <button type="submit" class="btn">Sign Up</button>
-        </form>
-        <p>Already have an account? <a href="#" onclick="openModal('loginModal'); closeModal('signupModal')">Login</a></p>
-    </div>
-</div>
-
-<!-- Search Results Modal -->
-<div id="search-results-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('search-results-modal')">&times;</span>
-        <h2>Search Results</h2>
-        <div id="search-results" style="margin-top: 3rem;"></div>
-    </div>
-</div>  
-
-<script src="{{ url_for('static', filename='js/search.js') }}"></script>
-<script>
-    function openModal(modalId) {
-        document.getElementById(modalId).style.display = 'block';
-        document.body.classList.add('modal-open');
-    }
-
-    function closeModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
-        document.body.classList.remove('modal-open');
-    }
-
-    window.onclick = function (event) {
-        if (event.target.classList.contains('modal')) {
-            event.target.style.display = 'none';
+    
+    <!-- Search Results Modal -->
+    <div id="search-results-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('search-results-modal')">&times;</span>
+            <h2>Search Results</h2>
+            <div id="search-results" style="margin-top: 3rem;"></div>
+        </div>
+    </div>  
+    
+    <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.classList.add('modal-open');
+        }
+    
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
             document.body.classList.remove('modal-open');
         }
-    }
-</script>
+    
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.classList.remove('modal-open');
+            }
+        }
+    </script>

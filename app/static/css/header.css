@@ -37,6 +37,41 @@
     position: relative;
 }
 
+.filter-container {
+    display: flex;
+}
+
+.filter-select {
+    height: 40px;
+    padding: 0 0.75rem;
+    border: none;
+    background-color: #313131;
+    color: white;
+    font-size: 0.9rem;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+.filter-select option {
+    background-color: #1a1a1a;
+    padding: 0.5rem;
+}
+
+/* Add to media query */
+@media (max-width: 768px) {
+    .filter-container {
+        flex-direction: column;
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+    
+    .filter-select {
+        width: 100%;
+        margin: 0.25rem 0;
+    }
+}
+
 .search-form .search-input {
     height: 40px;
     padding: 1rem 1rem;
@@ -90,6 +125,7 @@
     text-decoration: none;
     font-size: 1.5rem;
     font-weight: 600;
+    margin: 0 2rem;
 }
 
 .profile-btn {

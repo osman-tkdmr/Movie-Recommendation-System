@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/movie.css') }}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>{{ movie.title }}</title>
@@ -20,9 +21,46 @@
             </div>
             <div class="main-movie-info">
                 <h1>{{ movie.title }}</h1>
-                <p class="overview">{{ movie.overview }}</p>
-                <p class="genres">Genres: {{ movie.genres }}</p>
-                <p class="release-date">Release Date: {{ movie.release_date }}</p>
+                <div class="row">
+                    <div class="col-md-8">
+                        <p class="overview">{{ movie.overview }}</p>
+                        <p class="genres">Genres: {{ movie.genres }}</p>
+                        <p class="release-date">Release Date: {{ movie.release_date }}</p>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="rating-card">
+                            <div class="rating-section">
+                                {% if 'user_id' in session %}
+                                    <h4>Rate This Movie</h4>
+                                    <form method="POST" action="{{ url_for('rate_movie') }}">
+                                        <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                                        <div class="star-rating mb-3">
+                                            <div class="stars-container">
+                                                {% for i in range(1, 11) %}
+                                                    <div class="star {% if user_rating and user_rating.rating >= i %}active{% endif %}" 
+                                                         data-value="{{ i }}">★</div>
+                                                {% endfor %}
+                                                <button type="submit" class="btn-rating">
+                                                    {{ 'Update Rating' if user_rating else 'Submit Rating' }}
+                                                </button>
+                                            </div>
+                                            <input type="hidden" name="rating" id="ratingValue" 
+                                                   value="{{ user_rating.rating if user_rating else '' }}">
+                                        </div>
+                                    </form>
+                                {% endif %}
+                                
+                                <div class="average-rating mt-4">
+                                    <div class="rating-display">
+                                        <h4>Average Rating</h4> 
+                                        <span class="numeric-value">{{ "%.1f"|format(average_rating) }}/10</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -52,6 +90,7 @@
         const moviePaths = {{ recommended_movies | tojson | safe }};
     </script>
     <script src="{{ url_for('static', filename='js/slider.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ratings.js') }}"></script>
 
 </body>
 

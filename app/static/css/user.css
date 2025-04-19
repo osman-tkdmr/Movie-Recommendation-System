@@ -60,3 +60,181 @@ body {
     margin: 0.5rem 0 0;
     font-size: 1rem;
 }
+
+/* Add to user.css */
+.ratings-section {
+    padding: 2rem;
+    background: #2d2d2d;  /* Changed from #f8f9fa */
+    color: #ffffff;      /* Added text color */
+}
+
+.card {
+    background-color: #1f1f1f;
+    color: #d1d5db;
+}
+
+.rating-badge {
+    background: #3d3d3d;  /* Changed from #fff3cd */
+}
+
+.stars {
+    color: #ffd700;      /* Gold color for stars */
+}
+
+.numeric-rating {
+    color: #a0a0a0;      /* Light grey instead of dark grey */
+}
+
+/* Add this to ensure text visibility */
+.ratings-section h1,
+.ratings-section h2,
+.ratings-section h5 {
+    color: #ffffff;
+}
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.rating-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #fff3cd;
+    border-radius: 20px;
+    width: fit-content;
+}
+
+.stars {
+    color: #ffc107;
+    font-size: 1.2rem;
+}
+
+.numeric-rating {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.card-img-top {
+    height: 300px;
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.ratings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+.movie-card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: translateY(-5px);
+}
+
+.movie-poster {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.card-rating {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    padding: 1rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stars {
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    color: #ffd700;
+}
+
+.numeric-rating {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .ratings-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .movie-poster {
+        height: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ratings-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Add these styles to user.css */
+/* Replace existing pagination styles with these */
+.pagination-container {
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1rem 0;
+}
+
+.dot {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+.dot .material-icons {
+    font-size: 12px;
+    color: #52525b;
+    transition: all 0.3s ease;
+}
+
+.dot.active .material-icons {
+    color: #ffd700;
+    font-size: 14px;
+}
+
+.dot:hover .material-icons {
+    color: #a1a1aa;
+}
+
+.text-muted {
+    color: #9ca3af !important;
+    font-size: 0.9rem;
+}

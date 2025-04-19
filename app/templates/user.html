@@ -11,18 +11,30 @@
 <body>
     {% include 'header.html' %}
     <div class="main-container">
-        <h1>Welcome, {{ user.username }}</h1>
-        <h2>Your Ratings</h2>
-        <div class="ratings-container">
-            {% for movie in rated_movies %}
-            <div class="rating">
-                <img src="https://image.tmdb.org/t/p/w220_and_h330_face{{ movie.poster_path }}" alt="{{ movie.title }} poster" class="movie-poster">
-                <div class="movie-info">
-                    <h3>{{ movie.title }}</h3>
-                    <p>Your Rating: {{ movie.rating }}</p>
+        
+        <div class="ratings-section">
+            <h2 class="mb-4">Your Movie Ratings</h2>
+            <div class="ratings-grid">
+                {% for movie in rated_movies %}
+                <div class="movie-card">
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" 
+                         class="movie-poster" 
+                         alt="{{ movie.title }}">
+                    <div class="card-rating">
+                        <div class="stars">
+                            {% for i in range(1, 6) %}
+                                {% if movie.rating >= i*2 %}
+                                    ★
+                                {% else %}
+                                    ☆
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <span class="numeric-rating">{{ movie.rating }}/10</span>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
 
@@ -45,6 +57,24 @@
             }
         }
     </script>
+    <!-- Replace existing pagination with dot-style pagination -->
+    <div class="pagination-container">
+        <nav aria-label="Page navigation">
+            <div class="dots">
+                {% for page_num in pagination.iter_pages() %}
+                    {% if page_num %}
+                        <button class="dot {% if page_num == pagination.page %}active{% endif %}" 
+                                data-index="{{ loop.index0 }}"
+                                aria-label="Go to page {{ page_num }}"
+                                onclick="window.location.href='{{ url_for('user_profile', username=user.username, page=page_num) }}'">
+                            <span class="material-icons">circle</span>
+                        </button>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="text-muted mt-2">Page {{ pagination.page }} of {{ pagination.pages }}</div>
+        </nav>
+    </div>
 </body>
 
 </html>

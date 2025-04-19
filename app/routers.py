@@ -1,5 +1,8 @@
 from functools import wraps
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
+# Import Migrate
+from flask_migrate import Migrate
+# Change relative imports to absolute imports
 from app.models import db, bcrypt, User, Movie, Favorite, Rating, Watchlist
 from app.recommender import MovieRecommendationSystem
 from config import Config
@@ -9,8 +12,11 @@ app.config.from_object(Config)
 
 db.init_app(app)
 bcrypt.init_app(app)
+# Initialize Flask-Migrate
+migrate = Migrate(app, db)
+
 # Load Movie Data
-MRS = MovieRecommendationSystem(data_path="data\\processed\\myData.csv")
+MRS = MovieRecommendationSystem(data_path="C:\\Users\\osman\\OneDrive - Harran Üniversitesi\\Belgeler\\Final-Project1\\data\\processed\\myData.csv")
 top_movies = MRS.top_movies().to_dict(orient='records')
 
 def login_required(f):
@@ -101,21 +107,72 @@ def search():
 def movie_details(movie_id):
     movie = MRS.data[MRS.data['id'] == movie_id].iloc[0]
     ratings = Rating.query.filter_by(movie_id=movie.id).all()
+    user_rating = None
+    if 'user_id' in session:
+        user_rating = Rating.query.filter_by(
+            user_id=session['user_id'], 
+            movie_id=movie.id
+        ).first()
     average_rating = sum(rating.rating for rating in ratings) / len(ratings) if ratings else movie.vote_average
-    # Get recommended movies
     recommended_movies = MRS.recommend_movies(movie.title).to_dict(orient='records')
     return render_template('movie.html', movie=movie, average_rating=average_rating, 
-                         username=session.get('username'), recommended_movies=recommended_movies)
+                         username=session.get('username'), recommended_movies=recommended_movies,
+                         user_rating=user_rating)
+
+@app.route('/rate_movie', methods=['POST'])
+@login_required
+def rate_movie():
+    user_id = session['user_id']
+    movie_id = request.form.get('movie_id')
+    rating_value = request.form.get('rating')
+    
+    if not movie_id or not rating_value:
+        flash('Invalid rating submission', 'error')
+        return redirect(url_for('movie_details', movie_id=movie_id))
+
+    # Check for existing rating
+    existing_rating = Rating.query.filter_by(
+        user_id=user_id, 
+        movie_id=movie_id
+    ).first()
+
+    if existing_rating:
+        existing_rating.rating = float(rating_value)
+    else:
+        new_rating = Rating(
+            user_id=user_id,
+            movie_id=movie_id,
+            rating=float(rating_value)
+        )
+        db.session.add(new_rating)
+    
+    try:
+        db.session.commit()
+        flash('Rating submitted successfully!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash('Error submitting rating', 'error')
+    
+    return redirect(url_for('movie_details', movie_id=movie_id))
 
 
 @app.route('/user/<username>')
 @login_required
 def user_profile(username):
+    page = request.args.get('page', 1, type=int)
+    per_page = 12  # Items per page
+    
     user = User.query.filter_by(username=username).first_or_404()
-    user_ratings = Rating.query.filter_by(user_id=user.id).all()
+    pagination = Rating.query.filter_by(user_id=user.id).paginate(page=page, per_page=per_page)
+    
     rated_movies = [{
-        'title': Movie.query.get(rating.movie_id).title,
+        'title': MRS.data[MRS.data['id'] == rating.movie_id].iloc[0]['title'],
         'rating': rating.rating,
-        'poster_path': Movie.query.get(rating.movie_id).poster_path
-    } for rating in user_ratings if Movie.query.get(rating.movie_id)]
-    return render_template('user.html', user=user, rated_movies=rated_movies, username=session.get('username'))
+        'poster_path': MRS.data[MRS.data['id'] == rating.movie_id].iloc[0]['poster_path']
+    } for rating in pagination.items if not MRS.data[MRS.data['id'] == rating.movie_id].empty]
+    
+    return render_template('user.html', 
+                         user=user,
+                         rated_movies=rated_movies,
+                         pagination=pagination,
+                         username=session.get('username'))  # Fixed missing quote
