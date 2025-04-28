@@ -1,9 +1,10 @@
 Flask>=2.0.1
 Flask-SQLAlchemy>=2.5.1
 Flask-Bcrypt>=0.7.1
-# Dependencies compatible with Python 3.11
 pandas>=1.5.0
 numpy>=1.22.0
-# Using a newer scikit-learn version that's compatible with Python 3.11
 scikit-learn>=1.0.2
 kaggle==1.5.12
+transformers==4.40.0
+datasets==2.19.1
+torch>=2.0.0
