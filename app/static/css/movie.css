@@ -269,6 +269,112 @@ body {
     background-color: white;
 }
 
+/* Reviews Section Styling */
+.reviews-section {
+    padding: 2rem;
+    margin-top: 2rem;
+    background-color: #27272a;
+    border-radius: 0.5rem;
+}
+
+.reviews-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #ffffff;
+    border-bottom: 2px solid #4f46e5;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.review-form-container {
+    background-color: #323238;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.review-form-container h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: #e2e8f0;
+}
+
+.review-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid #4b5563;
+    background-color: #1f2937;
+    color: #e2e8f0;
+    font-size: 1rem;
+    resize: vertical;
+    margin-bottom: 1rem;
+}
+
+.review-textarea:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+.btn-submit-review {
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-submit-review:hover {
+    background-color: #4338ca;
+}
+
+.reviews-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.review-card {
+    background-color: #323238;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid #4b5563;
+    padding-bottom: 0.5rem;
+}
+
+.review-author {
+    font-weight: bold;
+    color: #e2e8f0;
+}
+
+.review-date {
+    color: #9ca3af;
+    font-size: 0.875rem;
+}
+
+.review-content {
+    color: #e2e8f0;
+    line-height: 1.6;
+}
+
+.no-reviews {
+    color: #9ca3af;
+    font-style: italic;
+    text-align: center;
+    padding: 2rem 0;
+}
+
 /* Dots Navigation */
 .dots {
     display: flex;

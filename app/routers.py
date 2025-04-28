@@ -1,9 +1,8 @@
 from functools import wraps
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
-# Import Migrate
 from flask_migrate import Migrate
 # Change relative imports to absolute imports
-from app.models import db, bcrypt, User, Movie, Favorite, Rating, Watchlist
+from app.models import db, bcrypt, User, Movie, Favorite, Rating, Watchlist, Review
 from app.recommender import MovieRecommendationSystem
 from config import Config
 
@@ -108,16 +107,20 @@ def movie_details(movie_id):
     movie = MRS.data[MRS.data['id'] == movie_id].iloc[0]
     ratings = Rating.query.filter_by(movie_id=movie.id).all()
     user_rating = None
+    
     if 'user_id' in session:
         user_rating = Rating.query.filter_by(
             user_id=session['user_id'], 
             movie_id=movie.id
         ).first()
+
     average_rating = sum(rating.rating for rating in ratings) / len(ratings) if ratings else movie.vote_average
     recommended_movies = MRS.recommend_movies(movie.title).to_dict(orient='records')
+    movie_reviews = Review.query.filter_by(movie_id=int(movie.id)).all()
+
     return render_template('movie.html', movie=movie, average_rating=average_rating, 
                          username=session.get('username'), recommended_movies=recommended_movies,
-                         user_rating=user_rating)
+                         user_rating=user_rating, movie_reviews=movie_reviews)
 
 @app.route('/rate_movie', methods=['POST'])
 @login_required
@@ -152,6 +155,33 @@ def rate_movie():
     except Exception as e:
         db.session.rollback()
         flash('Error submitting rating', 'error')
+    
+    return redirect(url_for('movie_details', movie_id=movie_id))
+
+@app.route('/submit_review', methods=['POST'])
+@login_required
+def submit_review():
+    user_id = session['user_id']
+    movie_id = request.form.get('movie_id')
+    review_content = request.form.get('review_content')
+    
+    if not movie_id or not review_content:
+        flash('Invalid review submission', 'error')
+        return redirect(url_for('movie_details', movie_id=movie_id))
+    
+    new_review = Review(
+        user_id=user_id,
+        movie_id=movie_id,
+        content=review_content
+    )
+    db.session.add(new_review)
+    
+    try:
+        db.session.commit()
+        flash('Review submitted successfully!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash('Error submitting review', 'error')
     
     return redirect(url_for('movie_details', movie_id=movie_id))
 

@@ -48,11 +48,22 @@ class Rating(db.Model):
 
     __table_args__ = (db.UniqueConstraint('user_id', 'movie_id', name='unique_user_movie_rating'), )
 
+class Review(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    
+    user = db.relationship('User', backref=db.backref('reviews', lazy=True))
+    movie = db.relationship('Movie', backref=db.backref('reviews', lazy=True))
+    
+
 class Watchlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), nullable=False)
-    added_date = db.Column(db.DateTime, default=lambda: datetime.now(datetime.timezone.utc))
+    added_date = db.Column(db.DateTime, default=lambda: datetime.datetime.now(datetime.timezone.utc))
 
     user = db.relationship('User', backref=db.backref('watchlist', lazy=True))
     movie = db.relationship('Movie', backref=db.backref('watchlist', lazy=True))

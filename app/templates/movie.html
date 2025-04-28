@@ -83,11 +83,46 @@
                 </div>
             </div>
         </div>
+
+        <div class="reviews-section">
+            <h2>Reviews</h2>
+            
+            {% if 'user_id' in session %}
+            <div class="review-form-container">
+                <h3>Write a Review</h3>
+                <form method="POST" action="{{ url_for('submit_review') }}">
+                    <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                    <div class="form-group">
+                        <textarea name="review_content" id="review_content" rows="4" class="review-textarea" placeholder="Share your thoughts about this movie..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit-review">Submit Review</button>
+                </form>
+            </div>
+            {% endif %}
+            
+            <div class="reviews-container">
+                {% if movie_reviews %}
+                    {% for review in movie_reviews %}
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span class="review-author">{{ review.user.username }}</span>
+                            <span class="review-date">{{ review.created_at.strftime('%B %d, %Y') }}</span>
+                        </div>
+                        <div class="review-content">
+                            {{ review.content }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="no-reviews">No reviews yet. Be the first to review this movie!</p>
+                {% endif %}
+            </div>
+        </div>
     </div>
 
     <script>
         // Define the moviePaths variable for the slider
-        const moviePaths = {{ recommended_movies | tojson | safe }};
+const moviePaths = JSON.parse('{{ recommended_movies | tojson | safe }}');
     </script>
     <script src="{{ url_for('static', filename='js/slider.js') }}"></script>
     <script src="{{ url_for('static', filename='js/ratings.js') }}"></script>
