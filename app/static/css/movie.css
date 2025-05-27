@@ -547,3 +547,46 @@ body {
         padding: 1rem;
     }
 }
+
+/* Login Required Message Styles */
+.login-required-message {
+    background-color: #323238;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+    border-left: 4px solid #4f46e5;
+}
+
+.login-required-message h3,
+.login-required-message h4 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    color: #e2e8f0;
+}
+
+.login-required-message p {
+    color: #d1d5db;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.login-required-message i {
+    color: #4f46e5;
+}
+
+.login-required-message a {
+    color: #4f46e5;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.login-required-message a:hover {
+    color: #6366f1;
+    text-decoration: underline;
+}
+
+.review-login-message {
+    margin-bottom: 2rem;
+}

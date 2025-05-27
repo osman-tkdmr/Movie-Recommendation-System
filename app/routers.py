@@ -15,7 +15,7 @@ bcrypt.init_app(app)
 migrate = Migrate(app, db)
 
 # Load Movie Data
-MRS = MovieRecommendationSystem(data_path="C:\\Users\\osman\\OneDrive - Harran Üniversitesi\\Belgeler\\Final-Project1\\data\\processed\\myData.csv")
+MRS = MovieRecommendationSystem(data_path="./Data/myData.csv")
 top_movies = MRS.top_movies().to_dict(orient='records')
 
 def login_required(f):
@@ -81,25 +81,51 @@ def logout():
 
 @app.route('/search', methods=['POST'])
 def search():
-    search_query = request.json.get('search_query')
-    search_type = request.json.get('search_type')
+    search_query = request.json.get('search_query', '')
+    search_type = request.json.get('search_type', 'title')
     page = request.json.get('page', 1)
+    genre_filter = request.json.get('genre', '')
+    year_filter = request.json.get('year', '')
+    rating_filter = request.json.get('rating', '')
     per_page = 10
+    
     search_methods = {
         'title': MRS.search_movies_by_title,
         'keyword': MRS.search_movies_by_keyword,
         'genre': MRS.search_movies_by_genre
     }
+    
     if search_type not in search_methods:
         return jsonify({'error': 'Invalid search type.'})
-    results = search_methods[search_type](search_query)
+    
+    # İlk arama işlemini gerçekleştir
+    if search_query:
+        results = search_methods[search_type](search_query)
+    else:
+        # Arama sorgusu yoksa tüm filmleri al
+        results = MRS.data
+    
+    # Filtreleri uygula
+    if genre_filter and search_type != 'genre':
+        results = results[results['genres'].str.contains(genre_filter, case=False, na=False)]
+    
+    if year_filter:
+        results = results[results['release_date'].str.contains(year_filter, case=False, na=False)]
+    
+    if rating_filter:
+        # Rating filtresi "7+" gibi bir format olduğundan, + işaretini kaldırıp sayıya dönüştürüyoruz
+        min_rating = float(rating_filter.replace('+', ''))
+        results = results[results['vote_average'] >= min_rating]
+    
     if results.empty:
-        return jsonify({'error': 'No movies found.'})
+        return jsonify({'paths': [], 'total_results': 0, 'page': page, 'per_page': per_page})
+    
     total_results = results.shape[0]
     start = (page - 1) * per_page
     end = start + per_page
     paginated_results = results.iloc[start:end]
     paths = paginated_results[['id', 'title', 'poster_path', 'vote_average', 'release_date']].to_dict(orient='records')
+    
     return jsonify({'paths': paths, 'total_results': total_results, 'page': page, 'per_page': per_page})
 
 @app.route('/movie/<int:movie_id>')

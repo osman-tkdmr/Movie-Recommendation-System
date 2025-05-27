@@ -2,10 +2,18 @@ let currentPage = 1;
 
 function searchMovies(page = 1) {
     const searchQuery = document.querySelector('.search-input').value;
-    const searchType = 'title'; // Change this to 'keyword' or 'genre' as needed
+    const genreFilter = document.getElementById('genre-filter').value;
+    const yearFilter = document.getElementById('year-filter').value;
+    const ratingFilter = document.getElementById('rating-filter').value;
+    
+    // Determine search type based on filters
+    let searchType = 'title';
+    if (genreFilter) {
+        searchType = 'genre';
+    }
 
-    if (searchQuery.length < 3) {
-        alert('Please enter at least 3 characters.');
+    if (searchQuery.length < 3 && !genreFilter && !yearFilter && !ratingFilter) {
+        alert('Please enter at least 3 characters or select a filter.');
         return;
     }
 
@@ -14,7 +22,14 @@ function searchMovies(page = 1) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ search_query: searchQuery, search_type: searchType, page: page })
+        body: JSON.stringify({ 
+            search_query: searchQuery, 
+            search_type: searchType, 
+            page: page,
+            genre: genreFilter,
+            year: yearFilter,
+            rating: ratingFilter
+        })
     })
     .then(response => response.json())
     .then(data => {
@@ -30,6 +45,12 @@ function searchMovies(page = 1) {
 function displaySearchResults(results, totalResults, page, perPage) {
     const searchResultsContainer = document.getElementById('search-results');
     searchResultsContainer.innerHTML = '';
+
+    if (results.length === 0) {
+        searchResultsContainer.innerHTML = '<p>No results found. Try different search criteria.</p>';
+        openModal('search-results-modal');
+        return;
+    }
 
     results.forEach(result => {
         const movieCard = document.createElement('div');
@@ -83,4 +104,23 @@ function displaySearchResults(results, totalResults, page, perPage) {
     searchResultsContainer.appendChild(paginationContainer);
 
     openModal('search-results-modal');
+}
+
+function toggleClearButton() {
+    const searchInput = document.querySelector('.search-input');
+    const clearButton = document.querySelector('.clear-button');
+    
+    if (searchInput.value.length > 0) {
+        clearButton.style.display = 'block';
+    } else {
+        clearButton.style.display = 'none';
+    }
+}
+
+function clearSearch() {
+    const searchInput = document.querySelector('.search-input');
+    const clearButton = document.querySelector('.clear-button');
+    
+    searchInput.value = '';
+    clearButton.style.display = 'none';
 }

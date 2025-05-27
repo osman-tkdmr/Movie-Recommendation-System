@@ -49,6 +49,11 @@
                                                    value="{{ user_rating.rating if user_rating else '' }}">
                                         </div>
                                     </form>
+                                {% else %}
+                                    <div class="login-required-message">
+                                        <h4>Rate This Movie</h4>
+                                        <p><i class="fas fa-lock"></i> Please <a href="#" onclick="openModal('loginModal')">Login</a> to rate this movie.</p>
+                                    </div>
                                 {% endif %}
                                 
                                 <div class="average-rating mt-4">
@@ -98,6 +103,11 @@
                     <button type="submit" class="btn-submit-review">Submit Review</button>
                 </form>
             </div>
+            {% else %}
+            <div class="login-required-message review-login-message">
+                <h3>Write a Review</h3>
+                <p><i class="fas fa-lock"></i> Please <a href="#" onclick="openModal('loginModal')">Login</a> to write a review.</p>
+            </div>
             {% endif %}
             
             <div class="reviews-container">
@@ -121,8 +131,7 @@
     </div>
 
     <script>
-        // Define the moviePaths variable for the slider
-const moviePaths = JSON.parse('{{ recommended_movies | tojson | safe }}');
+        const moviePaths = {{ recommended_movies | tojson | safe }};
     </script>
     <script src="{{ url_for('static', filename='js/slider.js') }}"></script>
     <script src="{{ url_for('static', filename='js/ratings.js') }}"></script>

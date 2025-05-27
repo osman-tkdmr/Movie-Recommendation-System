@@ -8,9 +8,12 @@ class MovieRecommendationSystem:
         # Load the dataset
         self.data = pd.read_csv(data_path)
         # Ensure necessary columns exist, fill with empty strings if not
-        for col in ['genres', 'keywords', 'tagline', 'overview']:
+        for col in ['genres', 'keywords', 'tagline', 'overview', 'poster_path', 'vote_average', 'release_date']:
             if col not in self.data.columns:
-                self.data[col] = ''
+                if col == 'vote_average':
+                    self.data[col] = 0.0
+                else:
+                    self.data[col] = ''
         # Create a new column with combined features
         self.data["combined_features"] = (
             self.data["overview"].fillna('') +

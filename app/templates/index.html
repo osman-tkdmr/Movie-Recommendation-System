@@ -37,7 +37,7 @@
         // Define the moviePaths variable for the slider
         const moviePaths = {{ top_movies| tojson | safe }};
     </script>
-    <script src="../static/js/slider.js"></script>
+    <script src="{{ url_for('static', filename='js/slider.js') }}"></script>
     
 </body>
 
