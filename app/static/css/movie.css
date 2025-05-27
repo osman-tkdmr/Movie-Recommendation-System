@@ -343,14 +343,18 @@ body {
     border-radius: 0.5rem;
     padding: 1.5rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 .review-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 0.75rem;
     border-bottom: 1px solid #4b5563;
     padding-bottom: 0.5rem;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .review-author {
@@ -589,4 +593,65 @@ body {
 
 .review-login-message {
     margin-bottom: 2rem;
+}
+
+/* Sentiment Analysis Styles */
+.review-sentiment {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-left: auto;
+}
+
+/* Sentiment level colors - gradient from red to green */
+.sentiment-level-0 {
+    background-color: rgba(220, 53, 69, 0.15); /* Very Negative - Red */
+    border-left: 4px solid #dc3545;
+}
+
+.sentiment-level-1 {
+    background-color: rgba(255, 128, 0, 0.15); /* Negative - Orange */
+    border-left: 4px solid #ff8000;
+}
+
+.sentiment-level-2 {
+    background-color: rgba(255, 193, 7, 0.15); /* Neutral - Yellow */
+    border-left: 4px solid #ffc107;
+}
+
+.sentiment-level-3 {
+    background-color: rgba(40, 167, 69, 0.15); /* Positive - Light Green */
+    border-left: 4px solid #28a745;
+}
+
+.sentiment-level-4 {
+    background-color: rgba(25, 135, 84, 0.15); /* Very Positive - Green */
+    border-left: 4px solid #198754;
+}
+
+/* Sentiment text colors */
+.sentiment-level-0 .review-sentiment {
+    background-color: #dc3545;
+    color: white;
+}
+
+.sentiment-level-1 .review-sentiment {
+    background-color: #ff8000;
+    color: white;
+}
+
+.sentiment-level-2 .review-sentiment {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.sentiment-level-3 .review-sentiment {
+    background-color: #28a745;
+    color: white;
+}
+
+.sentiment-level-4 .review-sentiment {
+    background-color: #198754;
+    color: white;
 }

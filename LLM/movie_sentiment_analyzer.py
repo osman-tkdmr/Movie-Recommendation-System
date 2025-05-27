@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import torch
-from model_utils import predict_sentiment, batch_predict
+from LLM.model_utils import predict_sentiment, batch_predict
 
 class MovieSentimentAnalyzer:
     """

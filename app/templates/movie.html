@@ -113,10 +113,13 @@
             <div class="reviews-container">
                 {% if movie_reviews %}
                     {% for review in movie_reviews %}
-                    <div class="review-card">
+                    <div class="review-card {% if review.sentiment_score is not none %}sentiment-level-{{ review.sentiment_score }}{% endif %}">
                         <div class="review-header">
                             <span class="review-author">{{ review.user.username }}</span>
                             <span class="review-date">{{ review.created_at.strftime('%B %d, %Y') }}</span>
+                            {% if review.sentiment is not none %}
+                            <span class="review-sentiment">{{ review.sentiment }}</span>
+                            {% endif %}
                         </div>
                         <div class="review-content">
                             {{ review.content }}

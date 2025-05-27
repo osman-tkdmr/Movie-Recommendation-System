@@ -195,11 +195,38 @@ def submit_review():
         flash('Invalid review submission', 'error')
         return redirect(url_for('movie_details', movie_id=movie_id))
     
-    new_review = Review(
-        user_id=user_id,
-        movie_id=movie_id,
-        content=review_content
-    )
+    # Analyze sentiment using MovieSentimentAnalyzer
+    try:
+        from LLM.movie_sentiment_analyzer import MovieSentimentAnalyzer
+        analyzer = MovieSentimentAnalyzer()
+        sentiment_result = analyzer.analyze_review(review_content)
+        
+        # Map sentiment to score for color coding
+        sentiment_to_score = {
+            "Very Negative": 0, 
+            "Negative": 1, 
+            "Neutral": 2, 
+            "Positive": 3, 
+            "Very Positive": 4
+        }
+        
+        new_review = Review(
+            user_id=user_id,
+            movie_id=movie_id,
+            content=review_content,
+            sentiment=sentiment_result['sentiment'],
+            sentiment_score=sentiment_to_score[sentiment_result['sentiment']],
+            sentiment_confidence=sentiment_result['confidence'][sentiment_result['sentiment']]
+        )
+    except Exception as e:
+        # If sentiment analysis fails, still save the review without sentiment data
+        print(f"Sentiment analysis error: {e}")
+        new_review = Review(
+            user_id=user_id,
+            movie_id=movie_id,
+            content=review_content
+        )
+    
     db.session.add(new_review)
     
     try:

@@ -54,6 +54,9 @@ class Review(db.Model):
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    sentiment = db.Column(db.String(20), nullable=True)  # Very Negative, Negative, Neutral, Positive, Very Positive
+    sentiment_score = db.Column(db.Integer, nullable=True)  # 0-4 score for easier color mapping
+    sentiment_confidence = db.Column(db.Float, nullable=True)  # Confidence score for the sentiment prediction
     
     user = db.relationship('User', backref=db.backref('reviews', lazy=True))
     movie = db.relationship('Movie', backref=db.backref('reviews', lazy=True))

@@ -75,3 +75,24 @@ The recommendation system uses a content-based filtering approach. The main step
 ### License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## LLM Integration
+
+The LLM module has been integrated into the main project to enhance movie recommendations with sentiment analysis. This module includes sentiment analysis models and utilities that can be used to analyze movie reviews and improve recommendation accuracy.
+
+### Setup Instructions for LLM
+
+1. **Navigate to the LLM directory**:
+    ```bash
+    cd LLM
+    ```
+
+2. **Install additional dependencies**:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+3. **Run sentiment analysis**:
+    Use the scripts in the `LLM` directory to perform sentiment analysis on movie reviews.
+
+For more details, refer to the `README.md` in the `LLM` directory.
