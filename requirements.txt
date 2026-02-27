@@ -7,4 +7,4 @@ scikit-learn>=1.0.2
 kaggle==1.5.12
 transformers==4.40.0
 datasets==2.19.1
-torch>=2.0.0
+torch>=2.0.0python-dotenv>=1.0.0
