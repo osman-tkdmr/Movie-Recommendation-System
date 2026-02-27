@@ -168,3 +168,4 @@ results/
 #.idea/
 # Environment variables
 .env
+*.json
